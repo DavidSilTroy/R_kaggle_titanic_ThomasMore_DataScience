@@ -13,7 +13,7 @@ library(caret)
 library(readr)
 
 setwd(getwd()) #Set the new directory to the script directory
-rm(list=ls())
+rm(list=ls()) #Clear the Global Enviorement
 
 #Loading the Test file and reading the columns.
 test_data <- read.csv("./kaggle/titanic/test.csv", stringsAsFactors = FALSE, header = TRUE)
