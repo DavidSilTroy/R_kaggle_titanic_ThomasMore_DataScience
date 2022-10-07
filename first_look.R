@@ -1,9 +1,9 @@
 #Hello! just starting..
 
 # Install required packages
-install.packages("readr")
-install.packages("dplyr")
-install.packages("ggplot2")
+# install.packages("readr")
+# install.packages("dplyr")
+# install.packages("ggplot2")
 
 # Load required libraries
 library(readr)
@@ -27,7 +27,8 @@ train$Survived <- recode_factor(train$Survived,
 train$Pclass <- recode_factor(train$Pclass,
                               "1" = "1st",
                               "2" = "2nd",
-                              "3" = "3rd")
+                              "3" = "3rd",
+                              .ordered = TRUE)
 
 train$Embarked <- recode_factor(train$Embarked,
                                 "C" = "Cherbourg",
