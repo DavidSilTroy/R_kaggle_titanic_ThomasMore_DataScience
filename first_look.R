@@ -1,24 +1,32 @@
 #Hello! just starting..
 
+################################################################################
+# Setup packages and settings
+################################################################################
+Sys.setenv(LANG = "en") # Set language to English
+setwd(getwd()) # Set the working directory to the script directory
+rm(list = ls()) # Clears the Global Env
+
 # Install required packages
-# install.packages("readr")
-# install.packages("dplyr")
-# install.packages("ggplot2")
+install.packages("tidyverse")
 
 # Load required libraries
-library(readr)
-library(dplyr)
-library(ggplot2)
+library(tidyverse) # Contains all tidyverse packages (ggplot2, dplyr, ...)
+
+
+################################################################################
+# Read and import the data set
+################################################################################
 
 # Read the data set (uses readr)
 column_types <- cols(
   Survived = col_factor(),
-  Pclass = col_factor(ordered = TRUE),
+  Pclass = col_factor(include_na = TRUE, ordered = TRUE),
   Sex = col_factor(),
-  Embarked = col_factor()
+  Embarked = col_factor(include_na = TRUE, ordered = TRUE)
 )
-setwd(getwd()) #Set the new directory to the script directory
 train <- read_csv("./kaggle/titanic/train.csv", col_types = column_types)
+
 
 # Rename the factors to be human readable (uses dplyr)
 train$Survived <- recode_factor(train$Survived,
@@ -29,21 +37,59 @@ train$Pclass <- recode_factor(train$Pclass,
                               "1" = "1st",
                               "2" = "2nd",
                               "3" = "3rd",
+                              .default = "Unknown", # NA -> Unknown
                               .ordered = TRUE)
 
 train$Embarked <- recode_factor(train$Embarked,
-                                "C" = "Cherbourg",
-                                "S" = "Southampton",
-                                "Q" = "Queenstown")
+                                "S" = "Southampton (England)",
+                                "C" = "Cherbourg (France)",
+                                "Q" = "Queenstown (Ireland)",
+                                .default = "Unknown", # NA -> Unknown
+                                .ordered = TRUE)
+
+
+################################################################################
+# Filtering and cleaning
+################################################################################
+# Check for the number of NA's in each column
+sanity_check <- function(my_df) {
+  for (j in 1:ncol(my_df)) {
+    print(paste(names(my_df[j]), ":", sum(is.na(my_df[, j]))))
+  }
+}
+
+sanity_check(train)
+
 
 # View 'train' tibble
 train
 
-# Plots and stuff (uses ggplot2)
-ggplot(data = train) + geom_point(mapping = aes(
-  x = Age,
-  y = Fare,
-  shape = Sex,
-  color = Survived
-))
+################################################################################
+# Adding useful columns
+################################################################################
+# Add a total Family size column
+train <- mutate(train, FamilySize = SibSp + Parch)
+tail(train)
 
+################################################################################
+# Plots and stuff (uses ggplot2)
+################################################################################
+
+# Embarked and Fare prices
+ggplot(data = train, mapping = aes(x = Embarked, y = Fare))+
+  geom_boxplot()
+
+# Male Female survival percentage
+ggplot(data = train, mapping = aes(x = Sex, fill = Survived)) +
+  geom_bar(position = "fill")
+
+
+# Male Pclass survival percentage
+ggplot(data = train, mapping = aes(x = Pclass, fill = Survived)) +
+  geom_bar(position = "fill")
+
+
+# Male FamilySize survival percentage
+ggplot(data = train, mapping = aes(x = FamilySize, fill = Survived)) +
+  geom_bar(position = "fill") +
+  facet_wrap(~ Sex)
