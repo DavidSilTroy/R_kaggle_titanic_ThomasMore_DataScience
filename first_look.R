@@ -5,6 +5,10 @@
 # install.packages("dplyr")
 # install.packages("ggplot2")
 
+#Setup
+rm(list=ls()) #Clear the Global Enviorement
+setwd(getwd()) #Set the new directory to the script directory
+
 # Load required libraries
 library(readr)
 library(dplyr)
@@ -17,7 +21,7 @@ column_types <- cols(
   Sex = col_factor(),
   Embarked = col_factor()
 )
-setwd(getwd()) #Set the new directory to the script directory
+
 train <- read_csv("./kaggle/titanic/train.csv", col_types = column_types)
 
 # Rename the factors to be human readable (uses dplyr)
