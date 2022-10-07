@@ -1,25 +1,39 @@
-#Hello! just starting..
+---
+title: "Titanic exercise"
+author: "Van Gestel Axel, Jetze Luyten, David Silva Troya"
+output: pdf_document
+editor_options: 
+  chunk_output_type: console
+---
 
-# Install required packages
-install.packages("readr")
-install.packages("dplyr")
-install.packages("ggplot2")
+### Install required packages
+```{r}
+# install.packages("readr")
+# install.packages("dplyr")
+# install.packages("ggplot2")
+```
 
-# Load required libraries
+
+### Load required libraries
+```{r message=FALSE}
 library(readr)
 library(dplyr)
 library(ggplot2)
+```
 
-# Read the data set (uses readr)
+### Read the data set (uses readr)
+```{r}
 column_types <- cols(
   Survived = col_factor(),
   Pclass = col_factor(ordered = TRUE),
   Sex = col_factor(),
   Embarked = col_factor()
 )
-train <- read_csv("./kaggle/titanic/train.csv", col_types = column_types)
+train <- read_csv("./train.csv", col_types = column_types)
+```
 
-# Rename the factors to be human readable (uses dplyr)
+### Rename the factors to be human readable (uses dplyr)
+```{r}
 train$Survived <- recode_factor(train$Survived,
                                 "0" = "No",
                                 "1" = "Yes")
@@ -33,14 +47,19 @@ train$Embarked <- recode_factor(train$Embarked,
                                 "C" = "Cherbourg",
                                 "S" = "Southampton",
                                 "Q" = "Queenstown")
+```
 
-# View 'train' tibble
+### View train tibble
+```{r}
 train
+```
 
-# Plots and stuff (uses ggplot2)
+### Plots and stuff (uses ggplot2)
+```{r message=FALSE, warning=FALSE}
 ggplot(data = train) + geom_point(mapping = aes(
   x = Age,
   y = Fare,
   shape = Sex,
   color = Survived
 ))
+```
