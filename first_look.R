@@ -8,7 +8,7 @@ setwd(getwd()) # Set the working directory to the script directory
 rm(list = ls()) # Clears the Global Env
 
 # Install required packages
-install.packages("tidyverse")
+# install.packages("tidyverse")
 
 # Load required libraries
 library(tidyverse) # Contains all tidyverse packages (ggplot2, dplyr, ...)
@@ -46,7 +46,6 @@ train$Embarked <- recode_factor(train$Embarked,
                                 "Q" = "Queenstown (Ireland)",
                                 .default = "Unknown", # NA -> Unknown
                                 .ordered = TRUE)
-
 
 ################################################################################
 # Filtering and cleaning
