@@ -85,10 +85,11 @@ ggplot(data = train, mapping = aes(x = Sex, fill = Survived)) +
 
 # Male Pclass survival percentage
 ggplot(data = train, mapping = aes(x = Pclass, fill = Survived)) +
-  geom_bar(position = "fill")
+  geom_bar(position = "fill") 
 
 
 # Male FamilySize survival percentage
 ggplot(data = train, mapping = aes(x = FamilySize, fill = Survived)) +
   geom_bar(position = "fill") +
-  facet_wrap(~ Sex)
+  facet_wrap(~ Sex) + 
+  scale_x_continuous(breaks = unique(train$FamilySize))
