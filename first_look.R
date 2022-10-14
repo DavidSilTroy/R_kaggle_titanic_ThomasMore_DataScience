@@ -68,6 +68,12 @@ train
 ################################################################################
 # Add a total Family size column
 train <- mutate(train, FamilySize = SibSp + Parch)
+
+# Group the cabin label into has cabin and has no cabin
+train <- mutate(train, CabinGroups = ifelse(is.na(train$Cabin),
+                                            "No cabin",
+                                            "Cabin"))
+
 tail(train)
 
 ################################################################################
@@ -78,16 +84,18 @@ tail(train)
 ggplot(data = train, mapping = aes(x = Embarked, y = Fare))+
   geom_boxplot()
 
-# Fare bigger than 500
-FareEnough = filter(train, Fare > 500)
 
 # Pclass, Family size and Survived bigger than fare 500
+FareEnough = filter(train, Fare > 500) # Fare bigger than 500
+
 ggplot(data = FareEnough, mapping = aes(x = Pclass, y=FamilySize))+
   geom_point(aes(shape=Survived))
+
 
 # Count of family size who paid over 500
 ggplot(data = FareEnough, mapping = aes(x=FamilySize))+
   geom_histogram()
+
 
 # Male Female survival percentage
 ggplot(data = train, mapping = aes(x = Sex, fill = Survived)) +
@@ -97,6 +105,13 @@ ggplot(data = train, mapping = aes(x = Sex, fill = Survived)) +
 # Male Pclass survival percentage
 ggplot(data = train, mapping = aes(x = Pclass, fill = Survived)) +
   geom_bar(position = "fill") 
+
+
+# Pclass and cabin label
+ggplot(data = train, mapping = aes(x = Pclass, fill = CabinGroups)) +
+  geom_bar(position = position_fill(reverse = TRUE)) +
+  scale_fill_manual(values = c("darkturquoise",
+                               "salmon"))
 
 
 # Male FamilySize survival percentage
