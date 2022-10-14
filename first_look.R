@@ -81,19 +81,19 @@ tail(train)
 ################################################################################
 
 # Embarked and Fare prices
-ggplot(data = train, mapping = aes(x = Embarked, y = Fare))+
+ggplot(data = train, mapping = aes(x = Embarked, y = Fare)) +
   geom_boxplot()
 
 
 # Pclass, Family size and Survived bigger than fare 500
-FareEnough = filter(train, Fare > 500) # Fare bigger than 500
+FareEnough <- filter(train, Fare > 500) # Fare bigger than 500
 
-ggplot(data = FareEnough, mapping = aes(x = Pclass, y=FamilySize))+
+ggplot(data = FareEnough, mapping = aes(x = Pclass, y = FamilySize)) +
   geom_point(aes(shape=Survived))
 
 
 # Count of family size who paid over 500
-ggplot(data = FareEnough, mapping = aes(x=FamilySize))+
+ggplot(data = FareEnough, mapping = aes(x = FamilySize)) +
   geom_histogram()
 
 
@@ -102,12 +102,12 @@ ggplot(data = train, mapping = aes(x = Sex, fill = Survived)) +
   geom_bar(position = "fill")
 
 
-# Male Pclass survival percentage
+# Pclass survival percentage
 ggplot(data = train, mapping = aes(x = Pclass, fill = Survived)) +
-  geom_bar(position = "fill") 
+  geom_bar(position = "fill")
 
 
-# Pclass and cabin label
+# Pclass and cabin label percentage
 ggplot(data = train, mapping = aes(x = Pclass, fill = CabinGroups)) +
   geom_bar(position = position_fill(reverse = TRUE)) +
   scale_fill_manual(values = c("darkturquoise",
@@ -117,5 +117,5 @@ ggplot(data = train, mapping = aes(x = Pclass, fill = CabinGroups)) +
 # Male FamilySize survival percentage
 ggplot(data = train, mapping = aes(x = FamilySize, fill = Survived)) +
   geom_bar(position = "fill") +
-  facet_wrap(~ Sex) + 
+  facet_wrap(~ Sex) +
   scale_x_continuous(breaks = unique(train$FamilySize))
