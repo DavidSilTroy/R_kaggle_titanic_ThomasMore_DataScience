@@ -81,7 +81,9 @@ tail(train)
 ################################################################################
 # Plots and stuff (uses ggplot2)
 ################################################################################
-
 train_numeric <- select(train, Age, SibSp, Parch, FamilySize, Fare)
 train_numeric_corr <- cor(train_numeric, use = "complete.obs") # Use only non NA
-ggcorrplot::ggcorrplot(train_numeric_corr)
+ggcorrplot::ggcorrplot(train_numeric_corr,
+                       lab = TRUE, # Show correlation coefficients
+                       colors = c("darkturquoise", "white", "salmon"),
+                       title = "Correlation between the numeric values")
