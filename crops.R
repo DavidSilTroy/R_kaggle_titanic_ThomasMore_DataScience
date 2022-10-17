@@ -23,9 +23,38 @@ theme_update(plot.title = element_text(hjust = 0.5)) # Center all plot titles
 # Read and import the data set
 ################################################################################
 # Read the data set (uses readxl)
-crops <- read_excel(
+column_types <- c(
+  "numeric", # ...1
+  "numeric", # Harvest_year
+  "text",    # admin0
+  "text",    # admin1
+  "text",    # crop
+  "numeric", # hectares (ha)
+  "numeric", # production (tonnes)
+  "numeric", # year
+  "numeric", # yield(tonnes/ha)
+  "text",    # admin2
+  "text"     # notes
+)
+crops <- read_xlsx(
   path = "./crops/food-twentieth-century-crop-statistics-1900-2017-xlsx.xlsx",
-  sheet = "CropStats")
+  sheet = "CropStats",
+  col_types = column_types)
+
+# Drop not needed columns
+crops <- select(crops, -c(...1, admin2, notes, Harvest_year))
+
+
+crops <- crops %>% mutate(crop = factor(crop,
+                                        levels = c("wheat", "winter wheat",
+                                                   "spring wheat", "maize",
+                                                   "cereals"),
+                                        ordered = TRUE))
+
+crops <- crops %>% mutate(year = as.integer(year))
+
+# Clear not needed variables
+rm(column_types)
 
 
 
@@ -57,7 +86,6 @@ tail(crops)
 # Correlation heatmap (uses ggcorrplot)
 ################################################################################
 crops_numeric <- select(crops,
-                        Harvest_year,
                         `hectares (ha)`,
                         `production (tonnes)`,
                         year ,
@@ -70,8 +98,20 @@ ggcorrplot::ggcorrplot(crops_numeric_corr,
                        colors = c("darkturquoise", "white", "salmon"),
                        title = "Correlation between the numeric values")
 
+# Clear not needed variables
+rm(crops_numeric, crops_numeric_corr)
+
 
 
 ################################################################################
 # Plots and stuff (uses ggplot2)
 ################################################################################
+
+
+
+
+################################################################################
+# References
+################################################################################
+# Correlation heatmap: 
+# http://www.sthda.com/english/wiki/ggcorrplot-visualization-of-a-correlation-matrix-using-ggplot2

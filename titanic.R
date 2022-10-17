@@ -21,21 +21,29 @@ theme_update(plot.title = element_text(hjust = 0.5)) # Center all plot titles
 ################################################################################
 # Read and import the data set
 ################################################################################
-
 # Read the data set (uses readr)
 column_types <- cols(
   Survived = col_factor(),
   Pclass = col_factor(include_na = TRUE, ordered = TRUE),
+  Name = col_character(),
   Sex = col_factor(),
+  Age = col_double(),
+  SibSp = col_integer(),
+  Parch = col_integer(),
+  Ticket = col_character(),
+  Fare = col_double(),
+  Cabin = col_character(),
   Embarked = col_factor(include_na = TRUE, ordered = TRUE)
 )
-train <- read_csv("./kaggle/titanic/train.csv", col_types = column_types)
+train <- read_csv("./kaggle/titanic/train.csv",
+                  col_types = column_types,
+                  col_select = -c(PassengerId))
 
 
 # Rename the factors to be human readable (uses dplyr)
 train$Survived <- recode_factor(train$Survived,
                                 "0" = "No",
-                                "1" = "Yes")
+                                "1" = "Yes",)
 
 train$Pclass <- recode_factor(train$Pclass,
                               "1" = "1st",
@@ -50,6 +58,9 @@ train$Embarked <- recode_factor(train$Embarked,
                                 "Q" = "Queenstown (Ireland)",
                                 .default = "Unknown", # NA -> Unknown
                                 .ordered = TRUE)
+
+# Clear not needed variables
+rm(column_types)
 
 
 
@@ -89,12 +100,16 @@ tail(train)
 # Correlation heatmap (uses ggcorrplot)
 ################################################################################
 train_numeric <- select(train, Age, SibSp, Parch, FamilySize, Fare)
+
 train_numeric_corr <- cor(train_numeric, use = "complete.obs") # Use only non NA
+
 ggcorrplot::ggcorrplot(train_numeric_corr,
                        lab = TRUE, # Show correlation coefficients
                        colors = c("darkturquoise", "white", "salmon"),
                        title = "Correlation between the numeric values")
 
+# Clear not needed variables
+rm(train_numeric, train_numeric_corr)
 
 
 ################################################################################
@@ -144,5 +159,12 @@ ggplot(data = train, mapping = aes(x = Pclass, fill = CabinGroups)) +
 ggplot(data = train, mapping = aes(x = FamilySize, fill = Survived)) +
   geom_bar(position = "fill") +
   facet_wrap(~ Sex) +
-  scale_x_continuous(breaks = unique(train$FamilySize)) +
+  scale_x_continuous(breaks = min(train$FamilySize):max(train$FamilySize)) +
   ggtitle("FamilySize survival percentage by Sex")
+
+
+################################################################################
+# References
+################################################################################
+# Correlation heatmap: 
+# http://www.sthda.com/english/wiki/ggcorrplot-visualization-of-a-correlation-matrix-using-ggplot2
