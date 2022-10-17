@@ -75,3 +75,18 @@ ggcorrplot::ggcorrplot(crops_numeric_corr,
 ################################################################################
 # Plots and stuff (uses ggplot2)
 ################################################################################
+
+# Production x years
+ggplot(data = crops, mapping = aes(x = year, y = `production (tonnes)`)) +
+  geom_point() +
+  ggtitle("Production over the years")
+
+# Yield outliers
+ggplot(data = crops, mapping = aes(x = crop, y = `yield(tonnes/ha)`)) +
+  geom_boxplot() +
+  ggtitle("Yield outliers")
+
+# Count of crops
+ggplot(data = crops, mapping = aes(x = crop)) +
+  geom_bar() +
+  ggtitle("Amount of crops")
