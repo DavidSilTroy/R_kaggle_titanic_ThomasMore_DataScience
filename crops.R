@@ -25,8 +25,18 @@ theme_update(plot.title = element_text(hjust = 0.5)) # Center all plot titles
 # Read the data set (uses readxl)
 crops <- read_excel(
   path = "./crops/food-twentieth-century-crop-statistics-1900-2017-xlsx.xlsx",
-  sheet = "CropStats")
+  sheet = "CropStats",
+  na = c("","N/A"))
 
+# Rename the factors to be human readable (uses dplyr)
+crops$crop <- recode_factor(crops$crop,
+                              "spring wheat" = "wheat",
+                              "winter wheat" = "wheat",
+                              "wheat" = "wheat",
+                              "cereals" = "cereals",
+                              "maize" = "maize",
+                              .default = "Unknown", # NA -> Unknown
+                              .ordered = TRUE)
 
 
 ################################################################################
@@ -40,6 +50,10 @@ sanity_check <- function(my_df) {
 }
 
 sanity_check(crops)
+
+nrow(crops)
+
+
 
 
 # View 'crops' tibble
@@ -75,3 +89,24 @@ ggcorrplot::ggcorrplot(crops_numeric_corr,
 ################################################################################
 # Plots and stuff (uses ggplot2)
 ################################################################################
+
+ggplot(crops, aes(`hectares (ha)`, `production (tonnes)`)) + 
+  geom_point()
+
+ggplot(crops, aes(`Harvest_year`,`hectares (ha)`)) + 
+  geom_point()
+
+ggplot(crops, aes(`Harvest_year`,`production (tonnes)`)) + 
+  geom_point()
+
+ggplot(crops, aes(`crop`,`Harvest_year`)) + 
+  geom_point()
+
+ggplot(crops, aes(`crop`,`admin0`)) + 
+  geom_point()
+
+ggplot(crops, aes(`admin1`,`admin0`)) + 
+  geom_point()
+
+ggplot(data = crops, mapping = aes(x = `Harvest_year`, y = `admin2`)) +
+  geom_point()
