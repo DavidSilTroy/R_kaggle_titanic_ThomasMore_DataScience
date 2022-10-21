@@ -11,6 +11,7 @@
 library(tidyverse) # Contains all tidyverse packages (ggplot2, dplyr, ...)
 library(readxl) #  Need to load explicitly (not a core tidyverse package)
 library(ggcorrplot) # Used for generating correlation heatmaps (uses ggplot2)
+library("scales")
 
 Sys.setenv(LANG = "en") # Set language to English
 setwd(getwd()) # Set the working directory to the script directory
@@ -77,9 +78,11 @@ ggcorrplot::ggcorrplot(crops_numeric_corr,
 ################################################################################
 
 # Production x years
-ggplot(data = crops, mapping = aes(x = year, y = `production (tonnes)`)) +
+fit <- lm(ggplot(data = crops, mapping = aes(x = year, y = `production (tonnes)`) ) +
   geom_point() +
-  ggtitle("Production over the years")
+  scale_y_continuous(labels = comma) +
+  ylab("Production in tonnes") +
+  ggtitle("Production over the years"))
 
 # Yield outliers
 ggplot(data = crops, mapping = aes(x = crop, y = `yield(tonnes/ha)`)) +
@@ -90,3 +93,9 @@ ggplot(data = crops, mapping = aes(x = crop, y = `yield(tonnes/ha)`)) +
 ggplot(data = crops, mapping = aes(x = crop)) +
   geom_bar() +
   ggtitle("Amount of crops")
+
+ggplot(data = crops, mapping = aes(x = crop, y = `hectares (ha)`)) +
+  geom_boxplot() +
+  scale_y_continuous(labels = comma) +
+  ggtitle("Hectares outliers")
+  
