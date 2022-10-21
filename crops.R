@@ -73,6 +73,7 @@ sanity_check(crops)
 
 
 # View 'crops' tibble
+#View(crops)
 crops
 
 
@@ -109,11 +110,11 @@ rm(crops_numeric, crops_numeric_corr)
 ################################################################################
 
 # Production x years
-fit <- lm(ggplot(data = crops, mapping = aes(x = year, y = `production (tonnes)`) ) +
-  geom_point() +
-  scale_y_continuous(labels = comma) +
-  ylab("Production in tonnes") +
-  ggtitle("Production over the years"))
+ggplot(data = crops, mapping = aes(x = year, y = `production (tonnes)`)) +
+  geom_point(alpha = 1/10) +
+  stat_smooth(method = "lm", formula = y ~ x + I(x^2), size = 1)+
+  ggtitle("Production over the years")
+
 
 # Yield outliers
 ggplot(data = crops, mapping = aes(x = crop, y = `yield(tonnes/ha)`)) +
