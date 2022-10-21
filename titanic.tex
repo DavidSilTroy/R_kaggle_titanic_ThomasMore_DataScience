@@ -1,0 +1,521 @@
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+%
+\documentclass[
+]{article}
+\usepackage{amsmath,amssymb}
+\usepackage{lmodern}
+\usepackage{iftex}
+\ifPDFTeX
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provide euro and other symbols
+\else % if luatex or xetex
+  \usepackage{unicode-math}
+  \defaultfontfeatures{Scale=MatchLowercase}
+  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+% Use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\IfFileExists{microtype.sty}{% use microtype if available
+  \usepackage[]{microtype}
+  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\makeatletter
+\@ifundefined{KOMAClassName}{% if non-KOMA class
+  \IfFileExists{parskip.sty}{%
+    \usepackage{parskip}
+  }{% else
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
+}{% if KOMA class
+  \KOMAoptions{parskip=half}}
+\makeatother
+\usepackage{xcolor}
+\usepackage[margin=1in]{geometry}
+\usepackage{color}
+\usepackage{fancyvrb}
+\newcommand{\VerbBar}{|}
+\newcommand{\VERB}{\Verb[commandchars=\\\{\}]}
+\DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+% Add ',fontsize=\small' for more characters per line
+\usepackage{framed}
+\definecolor{shadecolor}{RGB}{248,248,248}
+\newenvironment{Shaded}{\begin{snugshade}}{\end{snugshade}}
+\newcommand{\AlertTok}[1]{\textcolor[rgb]{0.94,0.16,0.16}{#1}}
+\newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.77,0.63,0.00}{#1}}
+\newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\BuiltInTok}[1]{#1}
+\newcommand{\CharTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\CommentTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{#1}}
+\newcommand{\DecValTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\ErrorTok}[1]{\textcolor[rgb]{0.64,0.00,0.00}{\textbf{#1}}}
+\newcommand{\ExtensionTok}[1]{#1}
+\newcommand{\FloatTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\ImportTok}[1]{#1}
+\newcommand{\InformationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\NormalTok}[1]{#1}
+\newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.81,0.36,0.00}{\textbf{#1}}}
+\newcommand{\OtherTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{#1}}
+\newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\RegionMarkerTok}[1]{#1}
+\newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\StringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\VariableTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\WarningTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\usepackage{graphicx}
+\makeatletter
+\def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
+\def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
+\makeatother
+% Scale images if necessary, so that they will not overflow the page
+% margins by default, and it is still possible to overwrite the defaults
+% using explicit options in \includegraphics[width, height, ...]{}
+\setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
+% Set default figure placement to htbp
+\makeatletter
+\def\fps@figure{htbp}
+\makeatother
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\setcounter{secnumdepth}{-\maxdimen} % remove section numbering
+\ifLuaTeX
+  \usepackage{selnolig}  % disable illegal ligatures
+\fi
+\IfFileExists{bookmark.sty}{\usepackage{bookmark}}{\usepackage{hyperref}}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\urlstyle{same} % disable monospaced font for URLs
+\hypersetup{
+  pdftitle={Titanic dataset analasys},
+  pdfauthor={Jetze Luyten, David Silva Troya, Axel Van Gestel},
+  hidelinks,
+  pdfcreator={LaTeX via pandoc}}
+
+\title{Titanic dataset analasys}
+\author{Jetze Luyten, David Silva Troya, Axel Van Gestel}
+\date{}
+
+\begin{document}
+\maketitle
+
+\hypertarget{setup-the-enviroment}{%
+\subsection{Setup the enviroment}\label{setup-the-enviroment}}
+
+The first thing to setup for the analysts is the environment with the
+required packages and settings.
+
+\hypertarget{install-required-packages-and-load-required-libraries}{%
+\subsubsection{Install required packages and load required
+libraries}\label{install-required-packages-and-load-required-libraries}}
+
+During this analysis we used the \texttt{tidyverse} package for reading,
+cleaning and plotting the data and the \texttt{ggcorrplot} package to
+visualize the correlation matrix into a heat map.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# install.packages("tidyverse")}
+\CommentTok{\# install.packages("ggcorrplot")}
+
+\FunctionTok{library}\NormalTok{(tidyverse) }\CommentTok{\# Contains all tidyverse packages (ggplot2, dplyr, ...)}
+\FunctionTok{library}\NormalTok{(ggcorrplot) }\CommentTok{\# Used for generating correlation heatmaps (uses ggplot2)}
+\end{Highlighting}
+\end{Shaded}
+
+\hypertarget{setup-enviroment-settings}{%
+\subsubsection{Setup enviroment
+settings}\label{setup-enviroment-settings}}
+
+In the following code block we set the language R uses for it's messages
+to English, clear all the global variables so that we always start with
+a clean slate and setup ggplot to center the plot titles by default.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{Sys.setenv}\NormalTok{(}\AttributeTok{LANG =} \StringTok{"en"}\NormalTok{) }\CommentTok{\# Set language to English}
+\FunctionTok{rm}\NormalTok{(}\AttributeTok{list =} \FunctionTok{ls}\NormalTok{()) }\CommentTok{\# Clears the Global Env}
+\FunctionTok{theme\_update}\NormalTok{(}\AttributeTok{plot.title =} \FunctionTok{element\_text}\NormalTok{(}\AttributeTok{hjust =} \FloatTok{0.5}\NormalTok{)) }\CommentTok{\# Center all plot titles}
+\end{Highlighting}
+\end{Shaded}
+
+\hypertarget{read-and-import-the-data-set}{%
+\subsection{Read and import the data
+set}\label{read-and-import-the-data-set}}
+
+\hypertarget{read-the-data-set-uses-readr}{%
+\subsubsection{Read the data set (uses
+readr)}\label{read-the-data-set-uses-readr}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{column\_types }\OtherTok{\textless{}{-}} \FunctionTok{cols}\NormalTok{(}
+  \AttributeTok{Survived =} \FunctionTok{col\_factor}\NormalTok{(),}
+  \AttributeTok{Pclass =} \FunctionTok{col\_factor}\NormalTok{(}\AttributeTok{include\_na =} \ConstantTok{TRUE}\NormalTok{, }\AttributeTok{ordered =} \ConstantTok{TRUE}\NormalTok{),}
+  \AttributeTok{Name =} \FunctionTok{col\_character}\NormalTok{(),}
+  \AttributeTok{Sex =} \FunctionTok{col\_factor}\NormalTok{(),}
+  \AttributeTok{Age =} \FunctionTok{col\_double}\NormalTok{(),}
+  \AttributeTok{SibSp =} \FunctionTok{col\_integer}\NormalTok{(),}
+  \AttributeTok{Parch =} \FunctionTok{col\_integer}\NormalTok{(),}
+  \AttributeTok{Ticket =} \FunctionTok{col\_character}\NormalTok{(),}
+  \AttributeTok{Fare =} \FunctionTok{col\_double}\NormalTok{(),}
+  \AttributeTok{Cabin =} \FunctionTok{col\_character}\NormalTok{(),}
+  \AttributeTok{Embarked =} \FunctionTok{col\_factor}\NormalTok{(}\AttributeTok{include\_na =} \ConstantTok{TRUE}\NormalTok{, }\AttributeTok{ordered =} \ConstantTok{TRUE}\NormalTok{)}
+\NormalTok{)}
+\NormalTok{train }\OtherTok{\textless{}{-}} \FunctionTok{read\_csv}\NormalTok{(}\StringTok{"./kaggle/titanic/train.csv"}\NormalTok{,}
+                  \AttributeTok{col\_types =}\NormalTok{ column\_types,}
+                  \AttributeTok{col\_select =} \SpecialCharTok{{-}}\FunctionTok{c}\NormalTok{(PassengerId))}
+\end{Highlighting}
+\end{Shaded}
+
+\hypertarget{rename-the-factors-to-be-human-readable-uses-dplyr}{%
+\subsubsection{Rename the factors to be human readable (uses
+dplyr)}\label{rename-the-factors-to-be-human-readable-uses-dplyr}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{train}\SpecialCharTok{$}\NormalTok{Survived }\OtherTok{\textless{}{-}} \FunctionTok{recode\_factor}\NormalTok{(train}\SpecialCharTok{$}\NormalTok{Survived,}
+                                \StringTok{"0"} \OtherTok{=} \StringTok{"No"}\NormalTok{,}
+                                \StringTok{"1"} \OtherTok{=} \StringTok{"Yes"}\NormalTok{,)}
+
+\NormalTok{train}\SpecialCharTok{$}\NormalTok{Pclass }\OtherTok{\textless{}{-}} \FunctionTok{recode\_factor}\NormalTok{(train}\SpecialCharTok{$}\NormalTok{Pclass,}
+                              \StringTok{"1"} \OtherTok{=} \StringTok{"1st"}\NormalTok{,}
+                              \StringTok{"2"} \OtherTok{=} \StringTok{"2nd"}\NormalTok{,}
+                              \StringTok{"3"} \OtherTok{=} \StringTok{"3rd"}\NormalTok{,}
+                              \AttributeTok{.default =} \StringTok{"Unknown"}\NormalTok{, }\CommentTok{\# NA {-}\textgreater{} Unknown}
+                              \AttributeTok{.ordered =} \ConstantTok{TRUE}\NormalTok{)}
+
+\NormalTok{train}\SpecialCharTok{$}\NormalTok{Embarked }\OtherTok{\textless{}{-}} \FunctionTok{recode\_factor}\NormalTok{(train}\SpecialCharTok{$}\NormalTok{Embarked,}
+                                \StringTok{"S"} \OtherTok{=} \StringTok{"Southampton (England)"}\NormalTok{,}
+                                \StringTok{"C"} \OtherTok{=} \StringTok{"Cherbourg (France)"}\NormalTok{,}
+                                \StringTok{"Q"} \OtherTok{=} \StringTok{"Queenstown (Ireland)"}\NormalTok{,}
+                                \AttributeTok{.default =} \StringTok{"Unknown"}\NormalTok{, }\CommentTok{\# NA {-}\textgreater{} Unknown}
+                                \AttributeTok{.ordered =} \ConstantTok{TRUE}\NormalTok{)}
+
+\CommentTok{\# Clear not needed variables}
+\FunctionTok{rm}\NormalTok{(column\_types)}
+\end{Highlighting}
+\end{Shaded}
+
+\hypertarget{filtering-and-cleaning}{%
+\subsection{Filtering and cleaning}\label{filtering-and-cleaning}}
+
+\hypertarget{check-for-the-number-of-nas-in-each-column}{%
+\subsubsection{Check for the number of NA's in each
+column}\label{check-for-the-number-of-nas-in-each-column}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{sanity\_check }\OtherTok{\textless{}{-}} \ControlFlowTok{function}\NormalTok{(my\_df) \{}
+  \ControlFlowTok{for}\NormalTok{ (j }\ControlFlowTok{in} \DecValTok{1}\SpecialCharTok{:}\FunctionTok{ncol}\NormalTok{(my\_df)) \{}
+    \FunctionTok{print}\NormalTok{(}\FunctionTok{paste}\NormalTok{(}\FunctionTok{names}\NormalTok{(my\_df[j]), }\StringTok{":"}\NormalTok{, }\FunctionTok{sum}\NormalTok{(}\FunctionTok{is.na}\NormalTok{(my\_df[, j]))))}
+\NormalTok{  \}}
+\NormalTok{\}}
+
+\FunctionTok{sanity\_check}\NormalTok{(train)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] "Survived : 0"
+## [1] "Pclass : 0"
+## [1] "Name : 0"
+## [1] "Sex : 0"
+## [1] "Age : 177"
+## [1] "SibSp : 0"
+## [1] "Parch : 0"
+## [1] "Ticket : 0"
+## [1] "Fare : 0"
+## [1] "Cabin : 687"
+## [1] "Embarked : 0"
+\end{verbatim}
+
+\hypertarget{view-train-tibble}{%
+\subsubsection{View `train' tibble}\label{view-train-tibble}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{train}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## # A tibble: 891 x 11
+##    Survived Pclass Name       Sex     Age SibSp Parch Ticket  Fare Cabin Embar~1
+##    <fct>    <ord>  <chr>      <fct> <dbl> <int> <int> <chr>  <dbl> <chr> <ord>  
+##  1 No       3rd    Braund, M~ male     22     1     0 A/5 2~  7.25 <NA>  Southa~
+##  2 Yes      1st    Cumings, ~ fema~    38     1     0 PC 17~ 71.3  C85   Cherbo~
+##  3 Yes      3rd    Heikkinen~ fema~    26     0     0 STON/~  7.92 <NA>  Southa~
+##  4 Yes      1st    Futrelle,~ fema~    35     1     0 113803 53.1  C123  Southa~
+##  5 No       3rd    Allen, Mr~ male     35     0     0 373450  8.05 <NA>  Southa~
+##  6 No       3rd    Moran, Mr~ male     NA     0     0 330877  8.46 <NA>  Queens~
+##  7 No       1st    McCarthy,~ male     54     0     0 17463  51.9  E46   Southa~
+##  8 No       3rd    Palsson, ~ male      2     3     1 349909 21.1  <NA>  Southa~
+##  9 Yes      3rd    Johnson, ~ fema~    27     0     2 347742 11.1  <NA>  Southa~
+## 10 Yes      2nd    Nasser, M~ fema~    14     1     0 237736 30.1  <NA>  Cherbo~
+## # ... with 881 more rows, and abbreviated variable name 1: Embarked
+\end{verbatim}
+
+\hypertarget{adding-useful-columns}{%
+\subsection{Adding useful columns}\label{adding-useful-columns}}
+
+\hypertarget{add-a-total-family-size-column}{%
+\subsubsection{Add a total Family size
+column}\label{add-a-total-family-size-column}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{train }\OtherTok{\textless{}{-}} \FunctionTok{mutate}\NormalTok{(train, }\AttributeTok{FamilySize =}\NormalTok{ SibSp }\SpecialCharTok{+}\NormalTok{ Parch)}
+\end{Highlighting}
+\end{Shaded}
+
+\hypertarget{group-the-cabin-label-into-has-cabin-and-has-no-cabin}{%
+\subsubsection{Group the cabin label into has cabin and has no
+cabin}\label{group-the-cabin-label-into-has-cabin-and-has-no-cabin}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{train }\OtherTok{\textless{}{-}} \FunctionTok{mutate}\NormalTok{(train, }\AttributeTok{CabinGroups =} \FunctionTok{ifelse}\NormalTok{(}\FunctionTok{is.na}\NormalTok{(train}\SpecialCharTok{$}\NormalTok{Cabin),}
+                                            \StringTok{"No cabin"}\NormalTok{,}
+                                            \StringTok{"Cabin"}\NormalTok{))}
+\end{Highlighting}
+\end{Shaded}
+
+\hypertarget{add-married-column-only-works-for-female-passengers}{%
+\subsubsection{Add Married column, only works for female
+passengers}\label{add-married-column-only-works-for-female-passengers}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{train }\OtherTok{\textless{}{-}} \FunctionTok{mutate}\NormalTok{(train,}
+                \AttributeTok{Married =} \FunctionTok{ifelse}\NormalTok{(Sex }\SpecialCharTok{==} \StringTok{"female"}\NormalTok{,}
+\NormalTok{                                 stringr}\SpecialCharTok{::}\FunctionTok{str\_detect}\NormalTok{(Name, }\StringTok{"\^{}[Mm]rs"}\NormalTok{), }\ConstantTok{NA}\NormalTok{))}
+\end{Highlighting}
+\end{Shaded}
+
+\hypertarget{quick-sanity-check-of-the-train-tibble}{%
+\subsubsection{Quick sanity check of the `train'
+tibble}\label{quick-sanity-check-of-the-train-tibble}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{tail}\NormalTok{(train)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## # A tibble: 6 x 14
+##   Survived Pclass Name        Sex     Age SibSp Parch Ticket  Fare Cabin Embar~1
+##   <fct>    <ord>  <chr>       <fct> <dbl> <int> <int> <chr>  <dbl> <chr> <ord>  
+## 1 No       3rd    "Rice, Mrs~ fema~    39     0     5 382652 29.1  <NA>  Queens~
+## 2 No       2nd    "Montvila,~ male     27     0     0 211536 13    <NA>  Southa~
+## 3 Yes      1st    "Graham, M~ fema~    19     0     0 112053 30    B42   Southa~
+## 4 No       3rd    "Johnston,~ fema~    NA     1     2 W./C.~ 23.4  <NA>  Southa~
+## 5 Yes      1st    "Behr, Mr.~ male     26     0     0 111369 30    C148  Cherbo~
+## 6 No       3rd    "Dooley, M~ male     32     0     0 370376  7.75 <NA>  Queens~
+## # ... with 3 more variables: FamilySize <int>, CabinGroups <chr>,
+## #   Married <lgl>, and abbreviated variable name 1: Embarked
+\end{verbatim}
+
+\hypertarget{correlation-heatmap-uses-ggcorrplot}{%
+\subsection{Correlation heatmap (uses
+ggcorrplot)}\label{correlation-heatmap-uses-ggcorrplot}}
+
+\hypertarget{generate-a-correlation-heatmap-of-the-numeric-values}{%
+\subsubsection{Generate a correlation heatmap of the numeric
+values}\label{generate-a-correlation-heatmap-of-the-numeric-values}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{train\_numeric }\OtherTok{\textless{}{-}} \FunctionTok{select}\NormalTok{(train, Age, SibSp, Parch, FamilySize, Fare)}
+
+\NormalTok{train\_numeric\_corr }\OtherTok{\textless{}{-}} \FunctionTok{cor}\NormalTok{(train\_numeric, }\AttributeTok{use =} \StringTok{"complete.obs"}\NormalTok{) }\CommentTok{\# Use only non NA}
+
+\NormalTok{ggcorrplot}\SpecialCharTok{::}\FunctionTok{ggcorrplot}\NormalTok{(train\_numeric\_corr,}
+                       \AttributeTok{lab =} \ConstantTok{TRUE}\NormalTok{, }\CommentTok{\# Show correlation coefficients}
+                       \AttributeTok{colors =} \FunctionTok{c}\NormalTok{(}\StringTok{"darkturquoise"}\NormalTok{, }\StringTok{"white"}\NormalTok{, }\StringTok{"salmon"}\NormalTok{),}
+                       \AttributeTok{title =} \StringTok{"Correlation between the numeric values"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{titanic_files/figure-latex/unnamed-chunk-11-1.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Clear not needed variables}
+\FunctionTok{rm}\NormalTok{(train\_numeric, train\_numeric\_corr)}
+\end{Highlighting}
+\end{Shaded}
+
+\hypertarget{plots-and-stuff-uses-ggplot2}{%
+\subsection{Plots and stuff (uses
+ggplot2)}\label{plots-and-stuff-uses-ggplot2}}
+
+\hypertarget{age-per-sex-of-people-on-board-the-titanic}{%
+\subsubsection{Age per sex of people on-board the
+Titanic}\label{age-per-sex-of-people-on-board-the-titanic}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{ggplot}\NormalTok{(}\AttributeTok{data =}\NormalTok{ train, }\AttributeTok{mapping =} \FunctionTok{aes}\NormalTok{(}\AttributeTok{x =}\NormalTok{ Sex, }\AttributeTok{y =}\NormalTok{ Age)) }\SpecialCharTok{+}
+  \FunctionTok{geom\_boxplot}\NormalTok{() }\SpecialCharTok{+}
+  \FunctionTok{ggtitle}\NormalTok{(}\StringTok{"Age per sex of people on{-}board the Titanic"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{titanic_files/figure-latex/unnamed-chunk-12-1.pdf}
+
+\hypertarget{fare-prices-grouped-by-embarkment}{%
+\subsubsection{Fare prices grouped by
+embarkment}\label{fare-prices-grouped-by-embarkment}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{ggplot}\NormalTok{(}\AttributeTok{data =}\NormalTok{ train, }\AttributeTok{mapping =} \FunctionTok{aes}\NormalTok{(}\AttributeTok{x =}\NormalTok{ Embarked, }\AttributeTok{y =}\NormalTok{ Fare)) }\SpecialCharTok{+}
+  \FunctionTok{geom\_boxplot}\NormalTok{() }\SpecialCharTok{+}
+  \FunctionTok{ggtitle}\NormalTok{(}\StringTok{"Fare prices grouped by embarkment"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{titanic_files/figure-latex/unnamed-chunk-13-1.pdf}
+
+\hypertarget{fare-prices-grouped-by-passenger-class}{%
+\subsubsection{Fare prices grouped by passenger
+class}\label{fare-prices-grouped-by-passenger-class}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{ggplot}\NormalTok{(}\AttributeTok{data =}\NormalTok{ train, }\AttributeTok{mapping =} \FunctionTok{aes}\NormalTok{(}\AttributeTok{x =}\NormalTok{ Pclass, }\AttributeTok{y =}\NormalTok{ Fare)) }\SpecialCharTok{+}
+  \FunctionTok{geom\_boxplot}\NormalTok{() }\SpecialCharTok{+}
+  \FunctionTok{ggtitle}\NormalTok{(}\StringTok{"Fare prices grouped by passenger class"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{titanic_files/figure-latex/unnamed-chunk-14-1.pdf}
+
+\hypertarget{embarked-and-fare-prices}{%
+\subsubsection{Embarked and Fare
+prices}\label{embarked-and-fare-prices}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{ggplot}\NormalTok{(}\AttributeTok{data =}\NormalTok{ train, }\AttributeTok{mapping =} \FunctionTok{aes}\NormalTok{(}\AttributeTok{x =}\NormalTok{ Embarked, }\AttributeTok{y =}\NormalTok{ Fare)) }\SpecialCharTok{+}
+  \FunctionTok{geom\_boxplot}\NormalTok{() }\SpecialCharTok{+}
+  \FunctionTok{ggtitle}\NormalTok{(}\StringTok{"Embarked and Fare prices"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{titanic_files/figure-latex/unnamed-chunk-15-1.pdf}
+
+\hypertarget{family-size-survived-who-paid-over-500-grouped-by-embarkment}{%
+\subsubsection{Family size \& Survived who paid over 500 grouped by
+embarkment}\label{family-size-survived-who-paid-over-500-grouped-by-embarkment}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{FareEnough }\OtherTok{\textless{}{-}} \FunctionTok{filter}\NormalTok{(train, Fare }\SpecialCharTok{\textgreater{}} \DecValTok{500}\NormalTok{) }\CommentTok{\# Fare bigger than 500}
+
+\FunctionTok{ggplot}\NormalTok{(}\AttributeTok{data =}\NormalTok{ FareEnough, }\AttributeTok{mapping =} \FunctionTok{aes}\NormalTok{(}\AttributeTok{x =}\NormalTok{ Pclass, }\AttributeTok{y =}\NormalTok{ FamilySize)) }\SpecialCharTok{+}
+  \FunctionTok{geom\_point}\NormalTok{(}\FunctionTok{aes}\NormalTok{(}\AttributeTok{shape=}\NormalTok{Survived)) }\SpecialCharTok{+}
+  \FunctionTok{ggtitle}\NormalTok{(}\StringTok{"Family size \& Survived who paid over 500 grouped by embarkment"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{titanic_files/figure-latex/unnamed-chunk-16-1.pdf}
+
+\hypertarget{count-of-family-size-who-paid-over-500}{%
+\subsubsection{Count of family size who paid over
+500}\label{count-of-family-size-who-paid-over-500}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{ggplot}\NormalTok{(}\AttributeTok{data =}\NormalTok{ FareEnough, }\AttributeTok{mapping =} \FunctionTok{aes}\NormalTok{(}\AttributeTok{x =}\NormalTok{ FamilySize)) }\SpecialCharTok{+}
+  \FunctionTok{geom\_histogram}\NormalTok{() }\SpecialCharTok{+}
+  \FunctionTok{ggtitle}\NormalTok{(}\StringTok{"Count of family size who paid over 500"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{titanic_files/figure-latex/unnamed-chunk-17-1.pdf}
+
+\hypertarget{male-female-survival-percentage}{%
+\subsubsection{Male / Female survival
+percentage}\label{male-female-survival-percentage}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{ggplot}\NormalTok{(}\AttributeTok{data =}\NormalTok{ train, }\AttributeTok{mapping =} \FunctionTok{aes}\NormalTok{(}\AttributeTok{x =}\NormalTok{ Sex, }\AttributeTok{fill =}\NormalTok{ Survived)) }\SpecialCharTok{+}
+  \FunctionTok{geom\_bar}\NormalTok{(}\AttributeTok{position =} \StringTok{"fill"}\NormalTok{) }\SpecialCharTok{+}
+  \FunctionTok{ggtitle}\NormalTok{(}\StringTok{"Male / Female survival percentage"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{titanic_files/figure-latex/unnamed-chunk-18-1.pdf}
+
+\hypertarget{passenger-class-survival-percentage}{%
+\subsubsection{Passenger class survival
+percentage}\label{passenger-class-survival-percentage}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{ggplot}\NormalTok{(}\AttributeTok{data =}\NormalTok{ train, }\AttributeTok{mapping =} \FunctionTok{aes}\NormalTok{(}\AttributeTok{x =}\NormalTok{ Pclass, }\AttributeTok{fill =}\NormalTok{ Survived)) }\SpecialCharTok{+}
+  \FunctionTok{geom\_bar}\NormalTok{(}\AttributeTok{position =} \StringTok{"fill"}\NormalTok{) }\SpecialCharTok{+}
+  \FunctionTok{ggtitle}\NormalTok{(}\StringTok{"Passenger class survival percentage"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{titanic_files/figure-latex/unnamed-chunk-19-1.pdf}
+
+\hypertarget{passenger-class-has-cabin-label-percentage}{%
+\subsubsection{Passenger class has cabin label
+percentage}\label{passenger-class-has-cabin-label-percentage}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{ggplot}\NormalTok{(}\AttributeTok{data =}\NormalTok{ train, }\AttributeTok{mapping =} \FunctionTok{aes}\NormalTok{(}\AttributeTok{x =}\NormalTok{ Pclass, }\AttributeTok{fill =}\NormalTok{ CabinGroups)) }\SpecialCharTok{+}
+  \FunctionTok{geom\_bar}\NormalTok{(}\AttributeTok{position =} \FunctionTok{position\_fill}\NormalTok{(}\AttributeTok{reverse =} \ConstantTok{TRUE}\NormalTok{)) }\SpecialCharTok{+}
+  \FunctionTok{scale\_fill\_manual}\NormalTok{(}\AttributeTok{values =} \FunctionTok{c}\NormalTok{(}\StringTok{"darkturquoise"}\NormalTok{,}
+                               \StringTok{"salmon"}\NormalTok{)) }\SpecialCharTok{+}
+  \FunctionTok{ggtitle}\NormalTok{(}\StringTok{"Passenger class has cabin label percentage"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{titanic_files/figure-latex/unnamed-chunk-20-1.pdf}
+
+\hypertarget{family-size-survival-percentage-grouped-by-sex}{%
+\subsubsection{Family Size survival percentage grouped by
+Sex}\label{family-size-survival-percentage-grouped-by-sex}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{ggplot}\NormalTok{(}\AttributeTok{data =}\NormalTok{ train, }\AttributeTok{mapping =} \FunctionTok{aes}\NormalTok{(}\AttributeTok{x =}\NormalTok{ FamilySize, }\AttributeTok{fill =}\NormalTok{ Survived)) }\SpecialCharTok{+}
+  \FunctionTok{geom\_bar}\NormalTok{(}\AttributeTok{position =} \StringTok{"fill"}\NormalTok{) }\SpecialCharTok{+}
+  \FunctionTok{facet\_wrap}\NormalTok{(}\SpecialCharTok{\textasciitilde{}}\NormalTok{ Sex) }\SpecialCharTok{+}
+  \FunctionTok{scale\_x\_continuous}\NormalTok{(}\AttributeTok{breaks =} \FunctionTok{min}\NormalTok{(train}\SpecialCharTok{$}\NormalTok{FamilySize)}\SpecialCharTok{:}\FunctionTok{max}\NormalTok{(train}\SpecialCharTok{$}\NormalTok{FamilySize)) }\SpecialCharTok{+}
+  \FunctionTok{ggtitle}\NormalTok{(}\StringTok{"Family Size survival percentage grouped by Sex"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{titanic_files/figure-latex/unnamed-chunk-21-1.pdf}
+
+\hypertarget{references}{%
+\subsection{References}\label{references}}
+
+\begin{itemize}
+\tightlist
+\item
+  \href{http://www.sthda.com/english/wiki/ggcorrplot-visualization-of-a-correlation-matrix-using-ggplot2}{Correlation
+  heatmap using ggplot2}
+\end{itemize}
+
+\end{document}
