@@ -11,6 +11,7 @@
 library(tidyverse) # Contains all tidyverse packages (ggplot2, dplyr, ...)
 library(readxl) #  Need to load explicitly (not a core tidyverse package)
 library(ggcorrplot) # Used for generating correlation heatmaps (uses ggplot2)
+library("scales")
 
 Sys.setenv(LANG = "en") # Set language to English
 setwd(getwd()) # Set the working directory to the script directory
@@ -114,6 +115,7 @@ ggplot(data = crops, mapping = aes(x = year, y = `production (tonnes)`)) +
   stat_smooth(method = "lm", formula = y ~ x + I(x^2), size = 1)+
   ggtitle("Production over the years")
 
+
 # Yield outliers
 ggplot(data = crops, mapping = aes(x = crop, y = `yield(tonnes/ha)`)) +
   geom_boxplot() +
@@ -123,6 +125,13 @@ ggplot(data = crops, mapping = aes(x = crop, y = `yield(tonnes/ha)`)) +
 ggplot(data = crops, mapping = aes(x = crop)) +
   geom_bar() +
   ggtitle("Amount of crops")
+
+
+ggplot(data = crops, mapping = aes(x = crop, y = `hectares (ha)`)) +
+  geom_boxplot() +
+  scale_y_continuous(labels = comma) +
+  ggtitle("Hectares outliers")
+  
 
 
 
