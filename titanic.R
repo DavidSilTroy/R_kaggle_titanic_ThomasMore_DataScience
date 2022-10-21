@@ -12,6 +12,7 @@ library(tidyverse) # Contains all tidyverse packages (ggplot2, dplyr, ...)
 library(ggcorrplot) # Used for generating correlation heatmaps (uses ggplot2)
 
 Sys.setenv(LANG = "en") # Set language to English
+setwd(getwd()) # Set the working directory to the script directory
 rm(list = ls()) # Clears the Global Env
 theme_update(plot.title = element_text(hjust = 0.5)) # Center all plot titles
 
@@ -78,7 +79,7 @@ sanity_check(train)
 
 # View 'train' tibble
 train
-
+#view(train) #checking the train data
 
 ################################################################################
 # Adding useful columns
@@ -91,7 +92,7 @@ train <- mutate(train, CabinGroups = ifelse(is.na(train$Cabin),
                                             "No cabin",
                                             "Cabin"))
 
-# Add Married column, only works for female passengers
+# Add Married column, only works for female passangers
 train <- mutate(train,
                 Married = ifelse(Sex == "female",
                                  stringr::str_detect(Name, "^[Mm]rs"), NA))
@@ -158,7 +159,7 @@ ggplot(data = FareEnough, mapping = aes(x = FamilySize)) +
   ggtitle("Count of family size who paid over 500")
 
 
-# Male / Female survival percentage
+# Male Female survival percentage
 ggplot(data = train, mapping = aes(x = Sex, fill = Survived)) +
   geom_bar(position = "fill") +
   ylab("Percentage") +
@@ -200,5 +201,7 @@ ggplot(data = train, mapping = aes(x = FamilySize, fill = Survived)) +
 ################################################################################
 # References
 ################################################################################
-# Correlation heatmap:
+# Correlation heatmap: 
 # http://www.sthda.com/english/wiki/ggcorrplot-visualization-of-a-correlation-matrix-using-ggplot2
+
+###
