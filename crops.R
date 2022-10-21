@@ -51,6 +51,18 @@ crops <- crops %>% mutate(crop = factor(crop,
                                                    "cereals"),
                                         ordered = TRUE))
 
+##Winter and Spring Wheat are only for a few countries. For that reason will be all unite as one "wheat" column
+crops$crop <- recode_factor(crops$crop,
+                            "winter wheat" = "wheat",
+                            "spring wheat"= "wheat",
+                            "wheat"= "wheat",
+                            "maize"= "maize",
+                            "cereals"= "cereals",
+                              .default = "Unknown", # NA -> Unknown
+                              .ordered = TRUE)
+
+crops <- crops %>% mutate(admin0 = as.factor(admin0))
+
 crops <- crops %>% mutate(year = as.integer(year))
 
 # Clear not needed variables
@@ -72,8 +84,8 @@ sanity_check(crops)
 
 
 # View 'crops' tibble
-#View(crops)
 crops
+
 
 
 ################################################################################
@@ -108,11 +120,18 @@ rm(crops_numeric, crops_numeric_corr)
 # Plots and stuff (uses ggplot2)
 ################################################################################
 
-# Production x years
-ggplot(data = crops, mapping = aes(x = year, y = `production (tonnes)`)) +
-  geom_point(alpha = 1/10) +
+##Countries data from the production (sorted)
+crops %>% mutate(admin0 = fct_reorder(admin0, desc(year) )) %>%
+  ggplot(mapping = aes(x = year , y = admin0)) +
+  geom_point() +
   stat_smooth(method = "lm", formula = y ~ x + I(x^2), size = 1)+
-  ggtitle("Production over the years")
+  ggtitle("Countries production data over the years 1900-2017") 
+
+# Production over the years
+#ggplot(data = crops, mapping = aes(x = year, y = `production (tonnes)`)) +
+# geom_point(alpha = 2/10) +
+# stat_smooth(method = "lm", formula = y ~ x + I(x^2), size = 1)+
+# ggtitle("Production over the years")
 
 
 # Yield outliers
@@ -125,12 +144,81 @@ ggplot(data = crops, mapping = aes(x = crop)) +
   geom_bar() +
   ggtitle("Amount of crops")
 
-
+#Counting the...
 ggplot(data = crops, mapping = aes(x = crop, y = `hectares (ha)`)) +
   geom_boxplot() +
   scale_y_continuous(labels = comma) +
   ggtitle("Hectares outliers")
-  
+
+
+
+###################################################
+#Productions over the years (splitted in 3 sections)
+#############################################
+
+# Section 1 from 1900-1950
+## To check the Production from the first 50 years (1900 - 1950)
+Production1900to1950year <- filter(crops, year <= 1950) # Under the 1950 years
+Production1900to1950year <- mutate(Production1900to1950year, admin0 = fct_reorder(admin0, desc(year) )) # Sorting the data
+
+### World Production(1900 - 1950)
+ggplot(data = Production1900to1950year, mapping = aes(x = year, y = `production (tonnes)`)) +
+  geom_point(alpha = 2/10) +
+  stat_smooth(method = "lm", formula = y ~ x + I(x^2), size = 1)+
+  ggtitle("World production over the years (1900 - 1950)")
+
+### Countries with more data of Production
+ggplot(data = Production1900to1950year, mapping = aes(x = year , y = admin0)) +
+  geom_point() +
+  ggtitle("Countries production data over the years (1900 - 1950)") 
+
+### Production of each country
+ggplot(data = Production1900to1950year, mapping = aes(x = year , y = admin0)) +
+  geom_bar(stat = "identity") +
+  ggtitle("Countries Tonnes Production over the years (1900 - 1950)")
+
+
+# Section 2 from 1951-2000
+## To check the Production (1951 - 2000)
+Production1950to2000year <- filter(crops, year > 1950 & year <= 2000) # Between the 1951-2000 years
+Production1950to2000year <- mutate(Production1950to2000year, admin0 = fct_reorder(admin0, desc(year) )) # Sorting the data
+
+### World Production (1951 - 2000)
+ggplot(data = Production1950to2000year, mapping = aes(x = year, y = `production (tonnes)`)) +
+  geom_point(alpha = 2/10) +
+  stat_smooth(method = "lm", formula = y ~ x + I(x^2), size = 1)+
+  ggtitle("Production over the years (1951 - 2000)")
+
+### Countries with more data of Production
+ggplot(data = Production1950to2000year, mapping = aes(x = year , y = admin0)) +
+  geom_point() +
+  ggtitle("Countries production data over the years (1951 - 2000)") 
+
+### Production of each country
+ggplot(data = Production1950to2000year, mapping = aes(x = year , y = admin0)) +
+  geom_bar(stat = "identity") +
+  ggtitle("Countries Tonnes Production over the years (1951 - 2000)")
+
+# Section 3 from 2000 - 2017
+## To check the Production (2000 - 2017)
+Production2000to2017year <- filter(crops, year > 2000) # Above the 2000 years
+Production2000to2017year <- mutate(Production2000to2017year, admin0 = fct_reorder(admin0, desc(year) )) # Sorting the data
+
+### World Production(2000 - 2017)
+ggplot(data = Production2000to2017year, mapping = aes(x = year, y = `production (tonnes)`)) +
+  geom_point(alpha = 2/10) +
+  stat_smooth(method = "lm", formula = y ~ x + I(x^2), size = 1)+
+  ggtitle("Production over the years (2000 - 2017)")  
+
+### Countries with more data of Production
+ggplot(data = Production2000to2017year, mapping = aes(x = year , y = admin0)) +
+  geom_point() +
+  ggtitle("Countries production data over the years (2000 - 2017)") 
+
+### Production of each country
+ggplot(data = Production2000to2017year, mapping = aes(x = year , y = admin0)) +
+  geom_bar(stat = "identity") +
+  ggtitle("Countries Tonnes Production over the years (2000 - 2017)")
 
 
 
