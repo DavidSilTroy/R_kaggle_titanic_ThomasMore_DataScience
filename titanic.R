@@ -21,21 +21,29 @@ theme_update(plot.title = element_text(hjust = 0.5)) # Center all plot titles
 ################################################################################
 # Read and import the data set
 ################################################################################
-
 # Read the data set (uses readr)
 column_types <- cols(
   Survived = col_factor(),
   Pclass = col_factor(include_na = TRUE, ordered = TRUE),
+  Name = col_character(),
   Sex = col_factor(),
+  Age = col_double(),
+  SibSp = col_integer(),
+  Parch = col_integer(),
+  Ticket = col_character(),
+  Fare = col_double(),
+  Cabin = col_character(),
   Embarked = col_factor(include_na = TRUE, ordered = TRUE)
 )
-train <- read_csv("./kaggle/titanic/train.csv", col_types = column_types)
+train <- read_csv("./kaggle/titanic/train.csv",
+                  col_types = column_types,
+                  col_select = -c(PassengerId))
 
 
 # Rename the factors to be human readable (uses dplyr)
 train$Survived <- recode_factor(train$Survived,
                                 "0" = "No",
-                                "1" = "Yes")
+                                "1" = "Yes",)
 
 train$Pclass <- recode_factor(train$Pclass,
                               "1" = "1st",
@@ -50,6 +58,9 @@ train$Embarked <- recode_factor(train$Embarked,
                                 "Q" = "Queenstown (Ireland)",
                                 .default = "Unknown", # NA -> Unknown
                                 .ordered = TRUE)
+
+# Clear not needed variables
+rm(column_types)
 
 
 
@@ -81,6 +92,11 @@ train <- mutate(train, CabinGroups = ifelse(is.na(train$Cabin),
                                             "No cabin",
                                             "Cabin"))
 
+# Add Married column, only works for female passangers
+train <- mutate(train,
+                Married = ifelse(Sex == "female",
+                                 stringr::str_detect(Name, "^[Mm]rs"), NA))
+
 tail(train)
 
 
@@ -89,29 +105,45 @@ tail(train)
 # Correlation heatmap (uses ggcorrplot)
 ################################################################################
 train_numeric <- select(train, Age, SibSp, Parch, FamilySize, Fare)
+
 train_numeric_corr <- cor(train_numeric, use = "complete.obs") # Use only non NA
+
 ggcorrplot::ggcorrplot(train_numeric_corr,
                        lab = TRUE, # Show correlation coefficients
                        colors = c("darkturquoise", "white", "salmon"),
                        title = "Correlation between the numeric values")
 
+# Clear not needed variables
+rm(train_numeric, train_numeric_corr)
 
 
 ################################################################################
 # Plots and stuff (uses ggplot2)
 ################################################################################
-# Embarked and Fare prices
+# Age per sex of people on-board the Titanic
+ggplot(data = train, mapping = aes(x = Sex, y = Age)) +
+  geom_boxplot() +
+  ggtitle("Age per sex of people on-board the Titanic")
+
+
+# Fare prices grouped by embarkment
 ggplot(data = train, mapping = aes(x = Embarked, y = Fare)) +
   geom_boxplot() +
-  ggtitle("Embarked and Fare prices")
+  ggtitle("Fare prices grouped by embarkment")
 
 
-# Pclass, Family size and Survived bigger than fare 500
+# Fare prices grouped by passanger class
+ggplot(data = train, mapping = aes(x = Pclass, y = Fare)) +
+  geom_boxplot() +
+  ggtitle("Fare prices grouped by embarkment")
+
+
+# Family size & Survived who paid over 500 grouped by embarkment
 FareEnough <- filter(train, Fare > 500) # Fare bigger than 500
 
 ggplot(data = FareEnough, mapping = aes(x = Pclass, y = FamilySize)) +
   geom_point(aes(shape=Survived)) +
-  ggtitle("Pclass, Family size and Survived bigger than fare 500")
+  ggtitle("Family size & Survived who paid over 500 grouped by embarkment")
 
 
 # Count of family size who paid over 500
@@ -123,26 +155,33 @@ ggplot(data = FareEnough, mapping = aes(x = FamilySize)) +
 # Male Female survival percentage
 ggplot(data = train, mapping = aes(x = Sex, fill = Survived)) +
   geom_bar(position = "fill") +
-  ggtitle("Male Female survival percentage")
+  ggtitle("Male / Female survival percentage")
 
 
-# Pclass survival percentage
+# Passenger class survival percentage
 ggplot(data = train, mapping = aes(x = Pclass, fill = Survived)) +
   geom_bar(position = "fill") +
-  ggtitle("Pclass survival percentage")
+  ggtitle("Passenger class survival percentage")
 
 
-# Pclass and cabin label percentage
+# Passenger class has cabin label percentage
 ggplot(data = train, mapping = aes(x = Pclass, fill = CabinGroups)) +
   geom_bar(position = position_fill(reverse = TRUE)) +
   scale_fill_manual(values = c("darkturquoise",
                                "salmon")) +
-  ggtitle("Pclass and cabin label percentage")
+  ggtitle("Passenger class has cabin label percentage")
 
 
-# FamilySize survival percentage by Sex
+# Family Size survival percentage grouped by Sex
 ggplot(data = train, mapping = aes(x = FamilySize, fill = Survived)) +
   geom_bar(position = "fill") +
   facet_wrap(~ Sex) +
-  scale_x_continuous(breaks = unique(train$FamilySize)) +
-  ggtitle("FamilySize survival percentage by Sex")
+  scale_x_continuous(breaks = min(train$FamilySize):max(train$FamilySize)) +
+  ggtitle("Family Size survival percentage grouped by Sex")
+
+
+################################################################################
+# References
+################################################################################
+# Correlation heatmap: 
+# http://www.sthda.com/english/wiki/ggcorrplot-visualization-of-a-correlation-matrix-using-ggplot2
