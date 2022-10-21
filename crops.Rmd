@@ -22,7 +22,7 @@ library(ggcorrplot) # Used for generating correlation heatmaps (uses ggplot2)
 
 ### Setup enviroment settings
 In the following code block we set the language R uses for it's messages to English, clear all the global variables so that we always start with a clean slate and setup ggplot to center the plot titles by default.
-```{r}
+```{r message=FALSE, warning=FALSE}
 Sys.setenv(LANG = "en") # Set language to English
 rm(list = ls()) # Clears the Global Env
 theme_update(plot.title = element_text(hjust = 0.5)) # Center all plot titles
@@ -32,7 +32,7 @@ theme_update(plot.title = element_text(hjust = 0.5)) # Center all plot titles
 
 ## Read and import the data set
 ### Read the data set (uses readr)
-```{r}
+```{r message=FALSE, warning=FALSE}
 
 column_types <- c(
   "numeric", # ...1
@@ -55,7 +55,7 @@ crops <- read_xlsx(
 ```
 
 ## Drop not needed columns
-```{r}
+```{r message=FALSE, warning=FALSE}
 crops <- select(crops, -c(...1, admin2, notes, Harvest_year))
 
 crops <- crops %>% mutate(crop = factor(crop,
@@ -103,7 +103,6 @@ sanity_check(crops)
 ### View 'crop' tibble
 ```{r}
 crops
-tail(crops)
 ```
 
 
@@ -131,17 +130,19 @@ rm(crops_numeric, crops_numeric_corr)
 
 
 ## Plots and stuff (uses ggplot2)
-### Production x years
+### Data from countries over the years
+Here is possible to see hoe the data from Italy, Australia and United States were giving data since the start of the years and Countries as China or Moroco were the last to share the data.
+This kind of information is necessary when we want to compare the couentries production in every year.
 ```{r message=FALSE, warning=FALSE}
 crops %>% mutate(admin0 = fct_reorder(admin0, desc(year) )) %>%
   ggplot(mapping = aes(x = year , y = admin0)) +
   geom_point() +
-  stat_smooth(method = "lm", formula = y ~ x + I(x^2), size = 1)+
   ggtitle("Countries production data over the years 1900-2017") 
 
 ```
 
 ### Yield outliers
+
 ```{r message=FALSE, warning=FALSE}
 ggplot(data = crops, mapping = aes(x = crop, y = `yield(tonnes/ha)`)) +
   geom_boxplot() +
@@ -165,6 +166,8 @@ ggplot(data = crops, mapping = aes(x = crop, y = `hectares (ha)`)) +
   ggtitle("Hectares outliers")
 ```
 
+#Productions over the years (splitted in 3 sections)
+Because the data coming from the different countries are not starting from the same year. We want to see how is the behavior in different group of years.
 
 
 # Productions over the years (splitted in 3 sections)
@@ -178,38 +181,40 @@ Production1900to1950year <- mutate(Production1900to1950year,
 ```
 
 ### World Production(1900 - 1950)
+The production started to increase along the years, but this is in a big part because the data coming from new countries who started to share the information.
 ```{r message=FALSE, warning=FALSE}
 ggplot(data = Production1900to1950year, mapping = aes(x = year, y = `production (tonnes)`)) +
   geom_point(alpha = 2/10) +
-  stat_smooth(method = "lm", formula = y ~ x + I(x^2), size = 1) +
+
   scale_y_continuous(labels = scales::comma) +
+  stat_smooth(method = "lm", formula = y ~ x + I(x^2), size = 1) +
+
   ggtitle("World production over the years (1900 - 1950)")
 ```
 
 ### Countries with more data of Production
+In reference to the data shared from the countries, it is clear to see that Italy, Australia and United States have an advantage from the other countries. Being Moroco the last one to start with the sharing of the data.
 ```{r message=FALSE, warning=FALSE}
 ggplot(data = Production1900to1950year, mapping = aes(x = year , y = admin0)) +
   geom_point() +
   ggtitle("Countries production data over the years (1900 - 1950)") 
+
 ```
 
-### Production of each country
+### Yield of each country
+Even when Italy is in the first place with sharing data, the yield is not the best in comparasion with all the others countries.
 ```{r message=FALSE, warning=FALSE}
-ggplot(data = Production1900to1950year, mapping = aes(x = year , y = admin0)) +
+ggplot(data = Production1900to1950year, mapping = aes( x = `yield(tonnes/ha)`, y = admin0)) +
   geom_bar(stat = "identity") +
   scale_x_continuous(labels = scales::comma) +
-  ggtitle("Countries Tonnes Production over the years (1900 - 1950)")
+
+  ggtitle("Countries Yield over the years (1900 - 1950)")
 ```
-
-```{r include=FALSE}
-# Clear not needed variables
-rm(Production1900to1950year)
-```
-
-
 
 # Section 2 from 1951-2000
 ## To check the Production (1951 - 2000)
+Here we filter the data to get only everything between the years 1951 to 2000
+
 ```{r message=FALSE, warning=FALSE}
 Production1950to2000year <- filter(crops, year > 1950 & year <= 2000) # Between the 1951-2000 years
 Production1950to2000year <- mutate(Production1950to2000year,
@@ -217,27 +222,34 @@ Production1950to2000year <- mutate(Production1950to2000year,
 ```
 
 ### World Production (1951 - 2000)
+Now is better to see the how the production is growing along the years. Currently between the these years all the countries are sharing data. And the production in the last years near of 2000 are more than 3 times greater than it was in 1950.
 ```{r message=FALSE, warning=FALSE}
 ggplot(data = Production1950to2000year, mapping = aes(x = year, y = `production (tonnes)`)) +
   geom_point(alpha = 2/10) +
-  stat_smooth(method = "lm", formula = y ~ x + I(x^2), size = 1) +
+
+  stat_smooth(method = "lm", formula = y ~ x + I(x^2), size = 1)+
+
   scale_y_continuous(labels = scales::comma) +
   ggtitle("Production over the years (1951 - 2000)")
+
 ```
 
 ### Countries with more data of Production
+Here is possible to see how the data now is being shared by all the different countries.
 ```{r message=FALSE, warning=FALSE}
 ggplot(data = Production1950to2000year, mapping = aes(x = year , y = admin0)) +
   geom_point() +
   ggtitle("Countries production data over the years (1951 - 2000)") 
 ```
 
-### Production of each country
+### Yield of each country
 ```{r message=FALSE, warning=FALSE}
-ggplot(data = Production1950to2000year, mapping = aes(x = year , y = admin0)) +
+ggplot(data = Production1950to2000year, mapping = aes( x = `yield(tonnes/ha)`, y = admin0)) +
   geom_bar(stat = "identity") +
   scale_x_continuous(labels = scales::comma) +
-  ggtitle("Countries Tonnes Production over the years (1951 - 2000)")
+
+  ggtitle("Countries Yield over the years (1951 - 2000)")
+
 ```
 
 ```{r include=FALSE}
@@ -249,6 +261,7 @@ rm(Production1950to2000year)
 
 # Section 3 from 2000 - 2017
 ## To check the Production (2000 - 2017)
+Now just checking the data in the last 17 years
 ```{r message=FALSE, warning=FALSE}
 Production2000to2017year <- filter(crops, year > 2000) # Above the 2000 years
 Production2000to2017year <- mutate(Production2000to2017year,
@@ -256,27 +269,34 @@ Production2000to2017year <- mutate(Production2000to2017year,
 ```
 
 ### World Production(2000 - 2017)
+Even tho the production seems to grow in a quadratic line, it is possible to see that actually is not really the case.
+The production for the most of the countries are staying at the same level.
 ```{r message=FALSE, warning=FALSE}
 ggplot(data = Production2000to2017year, mapping = aes(x = year, y = `production (tonnes)`)) +
   geom_point(alpha = 2/10) +
-  stat_smooth(method = "lm", formula = y ~ x + I(x^2), size = 1) +
+
+  stat_smooth(method = "lm", formula = y ~ x + I(x^2), size = 1)+
+
   scale_y_continuous(labels = scales::comma) +
   ggtitle("Production over the years (2000 - 2017)")  
 ```
 
 ### Countries with more data of Production
+But here again, like at the starting of the dataset, we are losing information from some couentries, like Czech Republic which shared the data only until 2012.
 ```{r message=FALSE, warning=FALSE}
 ggplot(data = Production2000to2017year, mapping = aes(x = year , y = admin0)) +
   geom_point() +
   ggtitle("Countries production data over the years (2000 - 2017)") 
 ```
 
-### Production of each country
+### Yield of each country
 ```{r message=FALSE, warning=FALSE}
-ggplot(data = Production2000to2017year, mapping = aes(x = year , y = admin0)) +
+ggplot(data = Production2000to2017year, mapping = aes( x = `yield(tonnes/ha)`, y = admin0)) +
   geom_bar(stat = "identity") +
   scale_x_continuous(labels = scales::comma) +
-  ggtitle("Countries Tonnes Production over the years (2000 - 2017)")
+
+  ggtitle("Countries Yield over the years (2000 - 2017)")
+
 ```
 
 ```{r include=FALSE}
@@ -285,10 +305,9 @@ rm(Production2000to2017year)
 ```
 
 
-
-
-
-
+Small Reflection:
+One of the most difficult parts about the Crop dataset is the amount of NA in the whole document, it is difficult to compare the countries when some of them started to share information years later or some of them stopped to shared years before the last data record.
+The results until now seems to say United States has the best Yield and greater Production, but at the same time it is because is the only one that has more data along the years.
 
 
 
