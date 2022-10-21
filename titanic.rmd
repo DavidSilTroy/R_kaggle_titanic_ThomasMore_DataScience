@@ -1,11 +1,11 @@
 ---
-title: "Titanic dataset analasys"
+title: "Titanic dataset analysis"
 author: "Jetze Luyten, David Silva Troya, Axel Van Gestel"
 output:
   pdf_document: default
 ---
 
-## Setup the enviroment
+## Setup the environment
 The first thing to setup for the analysts is the environment with the required packages and settings.
 
 ### Install required packages and load required libraries
@@ -19,7 +19,7 @@ library(ggcorrplot) # Used for generating correlation heatmaps (uses ggplot2)
 ```
 
 
-### Setup enviroment settings
+### Setup environment settings
 In the following code block we set the language R uses for it's messages to English, clear all the global variables so that we always start with a clean slate and setup ggplot to center the plot titles by default.
 ```{r}
 Sys.setenv(LANG = "en") # Set language to English
@@ -30,7 +30,9 @@ theme_update(plot.title = element_text(hjust = 0.5)) # Center all plot titles
 
 
 ## Read and import the data set
-### Read the data set (uses readr)
+Next, we read the the Titanic training csv file. By default the column types are calculated using a heuristic wish can be wrong at times. To counter this we set-up the column types beforehand, this also allows us to say which column needs to be a factor. During the read we also say that the PassengerId column can be skipped as this one isn't needed for our analysis.
+
+### Read the data set
 ```{r}
 column_types <- cols(
   Survived = col_factor(),
@@ -50,11 +52,14 @@ train <- read_csv("./kaggle/titanic/train.csv",
                   col_select = -c(PassengerId))
 ```
 
-### Rename the factors to be human readable (uses dplyr)
+### Rename the factors to be human readable
+To make the visualizations make more sense, we need to rename the factors so they make sense to the average reader. During this step we also rename the empty `NA` fields to `Unknown` and set-up the order of the factors that we want visualized in a specific order.
+
+To manage the memory consumption of our script we periodically remove the variables we don't need anymore from our environment.
 ```{r}
 train$Survived <- recode_factor(train$Survived,
                                 "0" = "No",
-                                "1" = "Yes",)
+                                "1" = "Yes")
 
 train$Pclass <- recode_factor(train$Pclass,
                               "1" = "1st",
@@ -77,7 +82,10 @@ rm(column_types)
 
 
 ## Filtering and cleaning
+The next important step is to check how complete the data you have imported is and clean it using amputation (removing it) or imputation (filling it in) if needed.
+
 ### Check for the number of NA's in each column
+So first we run a quick sanity check which prints all the column names with the number of empty fields next to it. In this case we have the column `Age` with 177 NA's and `Cabin` with 687 NA's. We could have filled in the empty age fields with the median of all the age fields but as our analysis doesn't really use the age column we didn't do this.
 ```{r}
 sanity_check <- function(my_df) {
   for (j in 1:ncol(my_df)) {
@@ -88,7 +96,20 @@ sanity_check <- function(my_df) {
 sanity_check(train)
 ```
 
+### Fix the naming format of the passengers names
+To later on extract the married status of the passengers, the name needs to be in the correct format where the prefix is at the start of the name.
+```{r}
+# Move the comma separated surname to the end of the name
+train <- separate(train, Name, c("SurName", "FirstName"), sep = ", ") %>%
+  mutate(Name = str_c(FirstName, SurName, sep = " "))
+
+# Drop the temporary columns
+train <- select(train, -c(SurName, FirstName))
+```
+
+
 ### View 'train' tibble
+Next we show the created tibble to see of the renamed factors worked correctly.
 ```{r}
 train
 ```
@@ -96,12 +117,15 @@ train
 
 
 ## Adding useful columns
+The imported data sometimes doesn't contain the column's you want to use, these need to be manually added. We use the mutate function for this.
 ### Add a total Family size column
+We want to plot graphs with the total family size, not just the siblings / spouses and parents / children. So we created a new column `FamilySize` that sums up those two columns.
 ```{r}
 train <- mutate(train, FamilySize = SibSp + Parch)
 ```
 
 ### Group the cabin label into has cabin and has no cabin
+For the analysis we want to do on the cabin labels, the labels itself contain to much detail. We only want to know if a person had a cabin or not so we added a new column `CabinGroups` with the simplified representation of the cabin labels.
 ```{r}
 train <- mutate(train, CabinGroups = ifelse(is.na(train$Cabin),
                                             "No cabin",
@@ -109,6 +133,9 @@ train <- mutate(train, CabinGroups = ifelse(is.na(train$Cabin),
 ```
 
 ### Add Married column, only works for female passengers
+The last added column is if a female person is married or not, this can be found out based on the prefix in the name. As we have fixed the names during the cleaning process, we can now do this easily with a simple regex search.
+
+As only the prefix of female passengers change based on if they are married or not, this doesn't work on the male passengers, hence they are left blank.
 ```{r}
 train <- mutate(train,
                 Married = ifelse(Sex == "female",
@@ -116,14 +143,15 @@ train <- mutate(train,
 ```
 
 ### Quick sanity check of the 'train' tibble
+As a quick sanity check, we view the last couple of rows of the tibble as errors usually get the worst at the last rows.
 ```{r}
 tail(train)
 ```
 
 
 
-## Correlation heatmap (uses ggcorrplot)
-### Generate a correlation heatmap of the numeric values
+## Correlation heatmap
+To get a sense of which columns have a correlation with each other, we generate a correlation heatmap. Sadly this can only be done on the numeric values.
 ```{r message=FALSE, warning=FALSE}
 train_numeric <- select(train, Age, SibSp, Parch, FamilySize, Fare)
 
@@ -140,15 +168,18 @@ rm(train_numeric, train_numeric_corr)
 
 
 
-## Plots and stuff (uses ggplot2)
-### Age per sex of people on-board the Titanic
+## Plotting the graphs
+The last step is to dive into the data and plot the graphs that answer your questions.
+### Age of people on-board the Titanic grouped by gender
+Firstly, we wanted to get a grip on the age of the passengers on-board of the Titanic based on the gender.
 ```{r message=FALSE, warning=FALSE}
 ggplot(data = train, mapping = aes(x = Sex, y = Age)) +
   geom_boxplot() +
-  ggtitle("Age per sex of people on-board the Titanic")
+  ggtitle("Age of people on-board the Titanic grouped by gender")
 ```
 
 ### Fare prices grouped by embarkment
+Then we wanted to find out if the different embarkment locations had different prices.
 ```{r message=FALSE, warning=FALSE}
 ggplot(data = train, mapping = aes(x = Embarked, y = Fare)) +
   geom_boxplot() +
@@ -156,6 +187,7 @@ ggplot(data = train, mapping = aes(x = Embarked, y = Fare)) +
 ```
 
 ### Fare prices grouped by passenger class
+And lets not forget to see if their is a price difference between the passenger classes as we would expect.
 ```{r message=FALSE, warning=FALSE}
 ggplot(data = train, mapping = aes(x = Pclass, y = Fare)) +
   geom_boxplot() +
@@ -163,26 +195,22 @@ ggplot(data = train, mapping = aes(x = Pclass, y = Fare)) +
   ggtitle("Fare prices grouped by passenger class")
 ```
 
-### Embarked and Fare prices
-```{r message=FALSE, warning=FALSE}
-ggplot(data = train, mapping = aes(x = Embarked, y = Fare)) +
-  geom_boxplot() +
-  ggtitle("Embarked and Fare prices")
-```
-
 ### Family size & Survived who paid over 500 grouped by passenger class
+As we saw some passengers who had a fare price of over 500 we wanted to zoom in on those. The first thing we wanted to check is if they where a large family. As we already knew they where from the 1ste class, we plotted them over the age.
 ```{r message=FALSE, warning=FALSE}
 FareEnough <- filter(train, Fare > 500) # Fare bigger than 500
 
-ggplot(data = FareEnough, mapping = aes(x = Pclass, y = FamilySize)) +
-  geom_point(aes(shape=Survived)) +
-  xlab("Passenger class") +
+ggplot(data = FareEnough, mapping = aes(x = Age, y = FamilySize)) +
+  geom_point(aes(shape = Survived)) +
+  xlab("Age") +
   ylab("Family size") +
+  scale_x_continuous(breaks = scales::breaks_width(1)) +
   scale_y_continuous(breaks = scales::breaks_width(1)) +
-  ggtitle("Family size & Survived who paid over 500 grouped by passenger class")
+  ggtitle("Family size & Survived who paid over 500 grouped by Age")
 ```
 
 ### Count of family size who paid over 500
+To get the exact count of passengers who paid over 500 for a ticket we counted them grouped by their family size.
 ```{r message=FALSE, warning=FALSE}
 ggplot(data = FareEnough, mapping = aes(x = FamilySize)) +
   geom_histogram() +
@@ -193,6 +221,7 @@ ggplot(data = FareEnough, mapping = aes(x = FamilySize)) +
 ```
 
 ### Male / Female survival percentage
+We where all told that it was female and children first, so we wanted check if that's true. To the surprise of no one, the female survival percentage is way higher than the one of the male passengers.
 ```{r message=FALSE, warning=FALSE}
 ggplot(data = train, mapping = aes(x = Sex, fill = Survived)) +
   geom_bar(position = "fill") +
@@ -202,6 +231,7 @@ ggplot(data = train, mapping = aes(x = Sex, fill = Survived)) +
 ```
 
 ### Passenger class survival percentage
+Next we wanted to see if the passenger class had any impact on the survival rating. The higher the class you paid for, the higher the chance you have to survive is what we thought.
 ```{r message=FALSE, warning=FALSE}
 ggplot(data = train, mapping = aes(x = Pclass, fill = Survived)) +
   geom_bar(position = "fill") +
@@ -212,6 +242,7 @@ ggplot(data = train, mapping = aes(x = Pclass, fill = Survived)) +
 ```
 
 ### Passenger class has cabin label percentage
+We also where curios if the 3rd class passengers didn't have their own cabin.
 ```{r message=FALSE, warning=FALSE}
 ggplot(data = train, mapping = aes(x = Pclass, fill = CabinGroups)) +
   geom_bar(position = position_fill(reverse = TRUE)) +
@@ -224,6 +255,7 @@ ggplot(data = train, mapping = aes(x = Pclass, fill = CabinGroups)) +
 ```
 
 ### Family Size survival percentage grouped by gender
+And lastly, we wanted to see if a larger family would struggle more to survive.
 ```{r message=FALSE, warning=FALSE}
 ggplot(data = train, mapping = aes(x = FamilySize, fill = Survived)) +
   geom_bar(position = "fill") +
@@ -235,6 +267,10 @@ ggplot(data = train, mapping = aes(x = FamilySize, fill = Survived)) +
   ggtitle("Family Size survival percentage grouped by gender")
 ```
 
+
+## Reflection
+One thing we quickly found out is that at the surface, not a lot was to be found, but there was a lot of hidden information when you went looking for it.
+Another thing that bothered us quite a lot is that even though the numbers on the axis where whole numbers, ggplot still put decimal points after the number when it didn't make any sense.
 
 ## References
 * [Correlation heatmap using ggplot2](http://www.sthda.com/english/wiki/ggcorrplot-visualization-of-a-correlation-matrix-using-ggplot2)
