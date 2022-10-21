@@ -11,7 +11,6 @@
 library(tidyverse) # Contains all tidyverse packages (ggplot2, dplyr, ...)
 library(readxl) #  Need to load explicitly (not a core tidyverse package)
 library(ggcorrplot) # Used for generating correlation heatmaps (uses ggplot2)
-library("scales")
 
 Sys.setenv(LANG = "en") # Set language to English
 rm(list = ls()) # Clears the Global Env
@@ -147,7 +146,7 @@ ggplot(data = crops, mapping = aes(x = crop)) +
 #Counting the...
 ggplot(data = crops, mapping = aes(x = crop, y = `hectares (ha)`)) +
   geom_boxplot() +
-  scale_y_continuous(labels = comma) +
+  scale_y_continuous(labels = scales::comma) +
   ggtitle("Hectares outliers")
 
 
@@ -177,7 +176,12 @@ ggplot(data = Production1900to1950year, mapping = aes(x = year , y = admin0)) +
 ggplot(data = Production1900to1950year, mapping = aes( x = `yield(tonnes/ha)`, y = admin0)) +
   geom_bar(stat = "identity") +
   scale_x_continuous(labels = scales::comma) +
+
   ggtitle("Countries Yield over the years (1900 - 1950)")
+
+
+# Clear not needed variables
+rm(Production1900to1950year)
 
 # Section 2 from 1951-2000
 ## To check the Production (1951 - 2000)
@@ -199,7 +203,12 @@ ggplot(data = Production1950to2000year, mapping = aes(x = year , y = admin0)) +
 ggplot(data = Production1950to2000year, mapping = aes( x = `yield(tonnes/ha)`, y = admin0)) +
   geom_bar(stat = "identity") +
   scale_x_continuous(labels = scales::comma) +
+
   ggtitle("Countries Yield over the years (1951 - 2000)")
+
+
+# Clear not needed variables
+rm(Production1950to2000year)
 
 # Section 3 from 2000 - 2017
 ## To check the Production (2000 - 2017)
@@ -222,9 +231,12 @@ ggplot(data = Production2000to2017year, mapping = aes(x = year , y = admin0)) +
 ggplot(data = Production2000to2017year, mapping = aes( x = `yield(tonnes/ha)`, y = admin0)) +
   geom_bar(stat = "identity") +
   scale_x_continuous(labels = scales::comma) +
+
   ggtitle("Countries Yield over the years (2000 - 2017)")
 
 
+# Clear not needed variables
+rm(Production2000to2017year)
 
 ################################################################################
 # References

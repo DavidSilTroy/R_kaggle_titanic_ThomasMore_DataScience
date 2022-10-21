@@ -59,6 +59,13 @@ train$Embarked <- recode_factor(train$Embarked,
                                 .default = "Unknown", # NA -> Unknown
                                 .ordered = TRUE)
 
+# Move the comma separated surname to the end of the name
+train <- separate(train, Name, c("SurName", "FirstName"), sep = ", ") %>%
+  mutate(Name = str_c(FirstName, SurName, sep = " "))
+
+# Drop the temporary columns
+train <- select(train, -c(SurName, FirstName))
+
 # Clear not needed variables
 rm(column_types)
 
@@ -120,7 +127,7 @@ rm(train_numeric, train_numeric_corr)
 ################################################################################
 # Plots and stuff (uses ggplot2)
 ################################################################################
-# Age per sex of people on-board the Titanic
+# Age of people on-board the Titanic grouped by gender
 ggplot(data = train, mapping = aes(x = Sex, y = Age)) +
   geom_boxplot() +
   ggtitle("Age per sex of people on-board the Titanic")
@@ -139,15 +146,16 @@ ggplot(data = train, mapping = aes(x = Pclass, y = Fare)) +
   ggtitle("Fare prices grouped by passenger class")
 
 
-# Family size & Survived who paid over 500 grouped by passenger class
+# Family size & Survived who paid over 500 grouped by Age
 FareEnough <- filter(train, Fare > 500) # Fare bigger than 500
 
-ggplot(data = FareEnough, mapping = aes(x = Pclass, y = FamilySize)) +
-  geom_point(aes(shape=Survived)) +
-  xlab("Passenger class") +
+ggplot(data = FareEnough, mapping = aes(x = Age, y = FamilySize)) +
+  geom_point(aes(shape = Survived)) +
+  xlab("Age") +
   ylab("Family size") +
+  scale_x_continuous(breaks = scales::breaks_width(1)) +
   scale_y_continuous(breaks = scales::breaks_width(1)) +
-  ggtitle("Family size & Survived who paid over 500 grouped by passenger class")
+  ggtitle("Family size & Survived who paid over 500 grouped by Age")
 
 
 # Count of family size who paid over 500
@@ -194,7 +202,6 @@ ggplot(data = train, mapping = aes(x = FamilySize, fill = Survived)) +
   scale_x_continuous(breaks = min(train$FamilySize):max(train$FamilySize)) +
   xlab("Family size") +
   ylab("Percentage") +
-  scale_y_continuous(labels = scales::percent) +
   ggtitle("Family Size survival percentage grouped by gender")
 
 
