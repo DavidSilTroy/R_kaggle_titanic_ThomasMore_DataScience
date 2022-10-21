@@ -164,7 +164,8 @@ Production1900to1950year <- mutate(Production1900to1950year, admin0 = fct_reorde
 ### World Production(1900 - 1950)
 ggplot(data = Production1900to1950year, mapping = aes(x = year, y = `production (tonnes)`)) +
   geom_point(alpha = 2/10) +
-  stat_smooth(method = "lm", formula = y ~ x + I(x^2), size = 1)+
+  scale_y_continuous(labels = scales::comma) +
+  stat_smooth(method = "lm", formula = y ~ x + I(x^2), size = 1) +
   ggtitle("World production over the years (1900 - 1950)")
 
 ### Countries with more data of Production
@@ -173,10 +174,10 @@ ggplot(data = Production1900to1950year, mapping = aes(x = year , y = admin0)) +
   ggtitle("Countries production data over the years (1900 - 1950)") 
 
 ### Production of each country
-ggplot(data = Production1900to1950year, mapping = aes(x = year , y = admin0)) +
+ggplot(data = Production1900to1950year, mapping = aes( x = `yield(tonnes/ha)`, y = admin0)) +
   geom_bar(stat = "identity") +
-  ggtitle("Countries Tonnes Production over the years (1900 - 1950)")
-
+  scale_x_continuous(labels = scales::comma) +
+  ggtitle("Countries Yield over the years (1900 - 1950)")
 
 # Section 2 from 1951-2000
 ## To check the Production (1951 - 2000)
@@ -194,10 +195,11 @@ ggplot(data = Production1950to2000year, mapping = aes(x = year , y = admin0)) +
   geom_point() +
   ggtitle("Countries production data over the years (1951 - 2000)") 
 
-### Production of each country
-ggplot(data = Production1950to2000year, mapping = aes(x = year , y = admin0)) +
+### Yield of each country
+ggplot(data = Production1950to2000year, mapping = aes( x = `yield(tonnes/ha)`, y = admin0)) +
   geom_bar(stat = "identity") +
-  ggtitle("Countries Tonnes Production over the years (1951 - 2000)")
+  scale_x_continuous(labels = scales::comma) +
+  ggtitle("Countries Yield over the years (1951 - 2000)")
 
 # Section 3 from 2000 - 2017
 ## To check the Production (2000 - 2017)
@@ -208,6 +210,7 @@ Production2000to2017year <- mutate(Production2000to2017year, admin0 = fct_reorde
 ggplot(data = Production2000to2017year, mapping = aes(x = year, y = `production (tonnes)`)) +
   geom_point(alpha = 2/10) +
   stat_smooth(method = "lm", formula = y ~ x + I(x^2), size = 1)+
+  scale_y_continuous(labels = scales::comma) +
   ggtitle("Production over the years (2000 - 2017)")  
 
 ### Countries with more data of Production
@@ -215,10 +218,11 @@ ggplot(data = Production2000to2017year, mapping = aes(x = year , y = admin0)) +
   geom_point() +
   ggtitle("Countries production data over the years (2000 - 2017)") 
 
-### Production of each country
-ggplot(data = Production2000to2017year, mapping = aes(x = year , y = admin0)) +
+### Yield of each country
+ggplot(data = Production2000to2017year, mapping = aes( x = `yield(tonnes/ha)`, y = admin0)) +
   geom_bar(stat = "identity") +
-  ggtitle("Countries Tonnes Production over the years (2000 - 2017)")
+  scale_x_continuous(labels = scales::comma) +
+  ggtitle("Countries Yield over the years (2000 - 2017)")
 
 
 
