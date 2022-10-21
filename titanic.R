@@ -132,35 +132,47 @@ ggplot(data = train, mapping = aes(x = Embarked, y = Fare)) +
   ggtitle("Fare prices grouped by embarkment")
 
 
-# Fare prices grouped by passanger class
+# Fare prices grouped by passenger class
 ggplot(data = train, mapping = aes(x = Pclass, y = Fare)) +
   geom_boxplot() +
-  ggtitle("Fare prices grouped by embarkment")
+  xlab("Passenger class") +
+  ggtitle("Fare prices grouped by passenger class")
 
 
-# Family size & Survived who paid over 500 grouped by embarkment
+# Family size & Survived who paid over 500 grouped by passenger class
 FareEnough <- filter(train, Fare > 500) # Fare bigger than 500
 
 ggplot(data = FareEnough, mapping = aes(x = Pclass, y = FamilySize)) +
   geom_point(aes(shape=Survived)) +
-  ggtitle("Family size & Survived who paid over 500 grouped by embarkment")
+  xlab("Passenger class") +
+  ylab("Family size") +
+  scale_y_continuous(breaks = scales::breaks_width(1)) +
+  ggtitle("Family size & Survived who paid over 500 grouped by passenger class")
 
 
 # Count of family size who paid over 500
 ggplot(data = FareEnough, mapping = aes(x = FamilySize)) +
   geom_histogram() +
+  xlab("Family size") +
+  scale_y_continuous(breaks = scales::breaks_width(1)) +
+  scale_x_continuous(breaks = scales::breaks_width(1)) +
   ggtitle("Count of family size who paid over 500")
 
 
 # Male Female survival percentage
 ggplot(data = train, mapping = aes(x = Sex, fill = Survived)) +
   geom_bar(position = "fill") +
+  ylab("Percentage") +
+  scale_y_continuous(labels = scales::percent) +
   ggtitle("Male / Female survival percentage")
 
 
 # Passenger class survival percentage
 ggplot(data = train, mapping = aes(x = Pclass, fill = Survived)) +
   geom_bar(position = "fill") +
+  xlab("Passenger class") +
+  ylab("Percentage") +
+  scale_y_continuous(labels = scales::percent) +
   ggtitle("Passenger class survival percentage")
 
 
@@ -169,15 +181,21 @@ ggplot(data = train, mapping = aes(x = Pclass, fill = CabinGroups)) +
   geom_bar(position = position_fill(reverse = TRUE)) +
   scale_fill_manual(values = c("darkturquoise",
                                "salmon")) +
+  xlab("Passenger class") +
+  ylab("Percentage") +
+  scale_y_continuous(labels = scales::percent) +
   ggtitle("Passenger class has cabin label percentage")
 
 
-# Family Size survival percentage grouped by Sex
+# Family Size survival percentage grouped by gender
 ggplot(data = train, mapping = aes(x = FamilySize, fill = Survived)) +
   geom_bar(position = "fill") +
   facet_wrap(~ Sex) +
   scale_x_continuous(breaks = min(train$FamilySize):max(train$FamilySize)) +
-  ggtitle("Family Size survival percentage grouped by Sex")
+  xlab("Family size") +
+  ylab("Percentage") +
+  scale_y_continuous(labels = scales::percent) +
+  ggtitle("Family Size survival percentage grouped by gender")
 
 
 ################################################################################
