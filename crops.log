@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.24 (MiKTeX 22.10) (preloaded format=pdflatex 2022.10.21)  21 OCT 2022 11:41
+This is pdfTeX, Version 3.141592653-2.6-1.40.24 (MiKTeX 22.10) (preloaded format=pdflatex 2022.10.21)  21 OCT 2022 11:58
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -149,4 +149,3 @@ Package: textcomp 2020/02/02 v2.0n Standard LaTeX package
 ! The log file hopefully contains the information to get MiKTeX going again:
 
 !   C:\Users\david\AppData\Local\MiKTeX\miktex\log\pdflatex.log
-! pdflatex: major issue: So far, you have not checked for MiKTeX updates.
