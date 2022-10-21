@@ -13,7 +13,6 @@ library(readxl) #  Need to load explicitly (not a core tidyverse package)
 library(ggcorrplot) # Used for generating correlation heatmaps (uses ggplot2)
 
 Sys.setenv(LANG = "en") # Set language to English
-setwd(getwd()) # Set the working directory to the script directory
 rm(list = ls()) # Clears the Global Env
 theme_update(plot.title = element_text(hjust = 0.5)) # Center all plot titles
 
